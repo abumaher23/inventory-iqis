@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#58bcfd",
+                    "on-surface-variant": "#42474f",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#001c37",
+                    "on-primary-container": "#8ebdf9",
+                    "surface-variant": "#e0e3e5",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#532800",
+                    "on-secondary-fixed": "#001e2f",
+                    "primary": "#00355f",
+                    "tertiary-fixed": "#ffdcc4",
+                    "surface-container-high": "#e6e8ea",
+                    "inverse-primary": "#a0c9ff",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface-bright": "#f7f9fb",
+                    "background": "#f7f9fb",
+                    "on-primary-fixed-variant": "#07497d",
+                    "on-secondary-fixed-variant": "#004b6f",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#f7f9fb",
+                    "on-tertiary-container": "#f9a767",
+                    "on-background": "#191c1e",
+                    "surface-tint": "#2d6197",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#004a6d",
+                    "on-surface": "#191c1e",
+                    "surface-container-low": "#f2f4f6",
+                    "outline-variant": "#c2c7d1",
+                    "tertiary-container": "#743b00",
+                    "inverse-surface": "#2d3133",
+                    "secondary-fixed": "#cae6ff",
+                    "outline": "#727780",
+                    "surface-container": "#eceef0",
+                    "on-tertiary-fixed": "#2f1400",
+                    "inverse-on-surface": "#eff1f3",
+                    "primary-fixed-dim": "#a0c9ff",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#d2e4ff",
+                    "primary-container": "#0f4c81",
+                    "tertiary-fixed-dim": "#ffb780",
+                    "surface-dim": "#d8dadc",
+                    "secondary-fixed-dim": "#8ccdff",
+                    "secondary": "#006492",
+                    "on-tertiary-fixed-variant": "#6f3800"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "260px",
+                    "gutter": "24px",
+                    "base": "8px",
+                    "container-margin": "32px",
+                    "table-row-height": "56px"
+            },
+            "fontFamily": {
+                    "h1": ["Public Sans"],
+                    "h2": ["Public Sans"],
+                    "body-md": ["Inter"],
+                    "h3": ["Public Sans"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "status-badge": ["Inter"]
+            },
+            "fontSize": {
+                    "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "status-badge": ["12px", {"lineHeight": "12px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #f7f9fb;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-[260px] border-r bg-white border-slate-200 flex flex-col py-6 px-4 gap-2 z-40">
+<div class="px-2 mb-8 flex items-center gap-3">
+<img alt="School Logo" class="w-10 h-10 object-contain" data-alt="A clean, professional school logo featuring an academic shield emblem in deep blue and silver. The logo is set against a pure white background with sharp lines and elegant serif typography, representing institutional authority and educational excellence in a corporate, modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABJg14OivU9GulJNZlbIyUoS48C9f6KQYs-YJAt4hUqLVAOpapZk-RnydBXLOXnshhXjyYILuAGPFdNiAKKgFFo1Yv8Mvj-hyZCgDgP8QIWTYMGalV5T4sU0Ay-HrZb_ndxEjsqc8Gvu8FNY_do9-I3AzQ9MlXBf-2oY8irTZyZbtMZiEdqJiHZm9NzDTgcS7FRQAufFckEOvk6HgOd8RslgQMnOo5qqwya3qD-a-1J9wVwoN04FeIXOl2ZCHd6WSFuaeyi1SIbKuU"/>
+<div>
+<h1 class="text-lg font-black text-blue-900">InventarisSakti</h1>
+<p class="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Manajemen Aset Sekolah</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 font-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-50 text-blue-900 border-r-4 border-blue-800 transition-all duration-200 font-semibold" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Inventaris</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 font-medium" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Log Transaksi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 font-medium" href="#">
+<span class="material-symbols-outlined">assignment_return</span>
+<span>Peminjaman</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 font-medium" href="#">
+<span class="material-symbols-outlined">output</span>
+<span>Pengambilan</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-slate-100 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 font-medium" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Pengaturan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 font-medium" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span>Bantuan</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-[260px] min-h-screen">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-6 sticky top-0 z-30 h-16 bg-white border-b border-slate-200 font-['Public_Sans'] antialiased">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-50 rounded-full text-slate-600">
+<span class="material-symbols-outlined">menu_open</span>
+</button>
+<nav class="flex text-sm">
+<span class="text-slate-400">Inventaris</span>
+<span class="mx-2 text-slate-300">/</span>
+<span class="text-blue-800 font-semibold">Pemasukan Barang Baru</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+<button class="w-10 h-10 hover:bg-slate-50 rounded-full"></button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-slate-200">
+<div class="text-right">
+<p class="text-xs font-bold text-slate-900">Admin Utama</p>
+<p class="text-[10px] text-slate-500">Logistik &amp; Aset</p>
+</div>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-slate-200" data-alt="A professional headshot of a school administrator in a corporate environment. The man is wearing a sharp navy blue suit and white shirt, looking confident with a friendly expression. The lighting is bright and even, typical of a modern office setting with soft-focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLz47D2HlnVmcoLPu0Nrf2ghpsTb3Tv4eY1msc2HHXi6AOiLOF54VlCqO4uaJ-ovB8N4rrFFN5FNZOgbMLBIxK6-EFDbTLH6mda61yvmPEdpUjyWa5Xn6wruSTITzA-nx5YElhUc2O_-ERhaE8puG8vOi2nK1-zgndUo-h-MvHDvrYQq055pAHiS7qgU-XIHf2EwBV2N1c6ewCH4NWmJSGn3qZtNgfu8LZhYUOtqcZkEp1cxBt3HTilYtlNidQgEGB4ObpcQRjZllx"/>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="max-w-5xl mx-auto py-8 px-6">
+<div class="mb-8">
+<h2 class="font-h1 text-h1 text-primary">Form Pemasukan Barang Baru</h2>
+<p class="font-body-lg text-on-surface-variant mt-1">Lengkapi detail di bawah untuk menambahkan stok ke dalam sistem manajemen aset.</p>
+</div>
+<!-- Layout Bento Grid for Form & Context -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Main Form Section -->
+<div class="col-span-8 bg-white border border-outline-variant rounded-xl p-8 shadow-sm">
+<form class="space-y-6">
+<!-- Pilih Barang -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Pilih Barang</label>
+<div class="relative">
+<select class="w-full h-12 px-4 rounded-lg border border-outline appearance-none bg-white focus:ring-2 focus:ring-primary-container focus:border-primary transition-all font-body-md">
+<option disabled="" selected="" value="">Cari atau pilih aset...</option>
+<option value="1">MacBook Air M2 - Lab Komputer</option>
+<option value="2">Projector Epson EB-X51</option>
+<option value="3">Kursi Guru Ergonomis - Ruang Guru</option>
+<option value="4">Papan Tulis Digital Samsung Flip</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                                Stok saat ini: 12 unit tersedia di gudang utama.
+                            </p>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<!-- Jumlah Masuk -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Jumlah Masuk</label>
+<div class="relative">
+<input class="w-full h-12 pl-4 pr-12 rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary transition-all font-body-md" placeholder="0" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-semibold">Unit</span>
+</div>
+</div>
+<!-- Tanggal Terima -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Tanggal Terima</label>
+<div class="relative">
+<input class="w-full h-12 px-4 rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary transition-all font-body-md" type="date"/>
+</div>
+</div>
+</div>
+<!-- Sumber Dana -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Sumber Dana</label>
+<div class="grid grid-cols-3 gap-3">
+<label class="relative flex items-center justify-center h-12 border border-outline rounded-lg cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-primary-container has-[:checked]:border-primary has-[:checked]:text-white">
+<input class="sr-only" name="sumber_dana" type="radio"/>
+<span class="text-sm font-semibold">BOS Reguler</span>
+</label>
+<label class="relative flex items-center justify-center h-12 border border-outline rounded-lg cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-primary-container has-[:checked]:border-primary has-[:checked]:text-white">
+<input class="sr-only" name="sumber_dana" type="radio"/>
+<span class="text-sm font-semibold">DAK Fisik</span>
+</label>
+<label class="relative flex items-center justify-center h-12 border border-outline rounded-lg cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-primary-container has-[:checked]:border-primary has-[:checked]:text-white">
+<input class="sr-only" name="sumber_dana" type="radio"/>
+<span class="text-sm font-semibold">Hibah/Lainnya</span>
+</label>
+</div>
+</div>
+<!-- Vendor -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Vendor / Penyedia</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">store</span>
+<input class="w-full h-12 pl-12 pr-4 rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary transition-all font-body-md" placeholder="Nama perusahaan atau toko..." type="text"/>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-4 flex items-center gap-4">
+<button class="flex-1 h-12 bg-primary text-white font-bold rounded-lg hover:brightness-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20" type="submit">
+<span class="material-symbols-outlined" data-weight="fill">save</span>
+                                Simpan Transaksi
+                            </button>
+<button class="px-8 h-12 border border-outline text-on-surface-variant font-semibold rounded-lg hover:bg-slate-50 transition-colors" type="button">
+                                Batal
+                            </button>
+</div>
+</form>
+</div>
+<!-- Info Sidebar Section -->
+<div class="col-span-4 space-y-6">
+<!-- Helper Card -->
+<div class="bg-blue-900 text-white rounded-xl p-6 shadow-md overflow-hidden relative">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-4xl mb-4 text-secondary-container" data-weight="fill">verified_user</span>
+<h3 class="font-h3 text-h3 mb-2">Kepatuhan Aset</h3>
+<p class="text-sm opacity-80 leading-relaxed mb-4">Pastikan nota pembelian diunggah setelah transaksi disimpan untuk validasi audit tahunan.</p>
+<div class="p-3 bg-white/10 rounded-lg border border-white/20">
+<p class="text-xs font-semibold uppercase tracking-wider mb-2">Status Audit</p>
+<div class="flex items-center gap-2">
+<div class="w-full bg-white/20 h-1.5 rounded-full">
+<div class="w-[75%] bg-secondary-container h-full rounded-full"></div>
+</div>
+<span class="text-[10px] font-bold">75%</span>
+</div>
+</div>
+</div>
+<div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+</div>
+<!-- Guidelines Card -->
+<div class="bg-white border border-outline-variant rounded-xl p-6 shadow-sm">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">Panduan Input</h4>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">1</span>
+<p class="text-xs text-slate-600">Pilih barang sesuai dengan kategori yang terdaftar dalam katalog aset resmi sekolah.</p>
+</li>
+<li class="flex gap-3">
+<span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">2</span>
+<p class="text-xs text-slate-600">Gunakan format angka bulat untuk jumlah barang. Satuan otomatis terdeteksi.</p>
+</li>
+<li class="flex gap-3">
+<span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">3</span>
+<p class="text-xs text-slate-600">Pilih sumber dana yang sesuai untuk pelaporan neraca keuangan sekolah di akhir periode.</p>
+</li>
+</ul>
+</div>
+<!-- Recent Activity Card -->
+<div class="bg-white border border-outline-variant rounded-xl p-6 shadow-sm">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">Pemasukan Terakhir</h4>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-blue-50 flex items-center justify-center text-blue-800">
+<span class="material-symbols-outlined text-lg">laptop_mac</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">MacBook Air M2</p>
+<p class="text-[10px] text-slate-500">5 Unit • BOS Reguler</p>
+</div>
+<span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Sukses</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-blue-50 flex items-center justify-center text-blue-800">
+<span class="material-symbols-outlined text-lg">chair</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">Kursi Guru Ergonomis</p>
+<p class="text-[10px] text-slate-500">20 Unit • DAK Fisik</p>
+</div>
+<span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Sukses</span>
+</div>
+</div>
+<button class="w-full mt-4 text-[11px] font-bold text-blue-800 hover:underline uppercase tracking-widest">Lihat Semua Riwayat</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

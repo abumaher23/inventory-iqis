@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#58bcfd",
+                        "on-surface-variant": "#42474f",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#001c37",
+                        "on-primary-container": "#8ebdf9",
+                        "surface-variant": "#e0e3e5",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#532800",
+                        "on-secondary-fixed": "#001e2f",
+                        "primary": "#00355f",
+                        "tertiary-fixed": "#ffdcc4",
+                        "surface-container-high": "#e6e8ea",
+                        "inverse-primary": "#a0c9ff",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-bright": "#f7f9fb",
+                        "background": "#f7f9fb",
+                        "on-primary-fixed-variant": "#07497d",
+                        "on-secondary-fixed-variant": "#004b6f",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "on-tertiary-container": "#f9a767",
+                        "on-background": "#191c1e",
+                        "surface-tint": "#2d6197",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#004a6d",
+                        "on-surface": "#191c1e",
+                        "surface-container-low": "#f2f4f6",
+                        "outline-variant": "#c2c7d1",
+                        "tertiary-container": "#743b00",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed": "#cae6ff",
+                        "outline": "#727780",
+                        "surface-container": "#eceef0",
+                        "on-tertiary-fixed": "#2f1400",
+                        "inverse-on-surface": "#eff1f3",
+                        "primary-fixed-dim": "#a0c9ff",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d2e4ff",
+                        "primary-container": "#0f4c81",
+                        "tertiary-fixed-dim": "#ffb780",
+                        "surface-dim": "#d8dadc",
+                        "secondary-fixed-dim": "#8ccdff",
+                        "secondary": "#006492",
+                        "on-tertiary-fixed-variant": "#6f3800"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "260px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "container-margin": "32px",
+                        "table-row-height": "56px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Public Sans"],
+                        "h2": ["Public Sans"],
+                        "body-md": ["Inter"],
+                        "h3": ["Public Sans"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "status-badge": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "status-badge": ["12px", {"lineHeight": "12px", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .sidebar-active { border-right: 4px solid #00355f; background-color: #f0f4f8; color: #00355f; font-weight: 600; }
+        .shadow-ambient { box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="bg-surface">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-white border-r border-slate-200 flex flex-col py-6 px-4 gap-2 z-50">
+<div class="flex items-center gap-3 px-2 mb-8">
+<img alt="School Logo" class="w-10 h-10 object-contain" data-alt="A clean, professional school crest logo featuring academic elements like a book and a torch, rendered in a minimalist vector style with deep academic blue and gold accents, against a pure white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdrkILzDUjtykA9wzFEPhUYhjkrlEqR7vFyev0aSDqtSJneymHgp8_NVdyWgXyfB0vQ4BZjshMDjIgQnst5tLihkan_BNpt6pDJypAoMRPIRGS7PJt9TKF8YkK06sHMBo54VJgLb2tRL8qMjQCgFmhhYQsAc5-T4X7VmL7JM65cM4VXLE_kdfcLyM7HdBQValulqPSMPAWReg9BWQKwwnWWirsUuWl4rWM--8lIgQNL3_GGZogG-PIzfvWlMgmHCFgcbs64QC4A7Yj"/>
+<div>
+<h1 class="text-lg font-black text-blue-900 leading-tight">InventarisSakti</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Manajemen Aset Sekolah</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-blue-800">dashboard</span>
+<span class="font-medium text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-blue-800">inventory_2</span>
+<span class="font-medium text-sm">Inventaris</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-900 border-r-4 border-blue-800 rounded-sm font-semibold transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="font-medium text-sm">Log Transaksi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-blue-800">assignment_return</span>
+<span class="font-medium text-sm">Peminjaman</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-blue-800">output</span>
+<span class="font-medium text-sm">Pengambilan</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1 pt-6 border-t border-slate-100">
+<button class="w-full bg-primary text-white py-3 rounded-lg font-bold text-sm mb-4 active:scale-95 transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                Tambah Barang
+            </button>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400">settings</span>
+<span class="font-medium text-sm">Pengaturan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400">contact_support</span>
+<span class="font-medium text-sm">Bantuan</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-[260px] h-16 bg-white border-b border-slate-200 flex justify-between items-center px-8 z-40">
+<div class="flex items-center bg-slate-100 rounded-full px-4 py-1.5 w-96">
+<span class="material-symbols-outlined text-slate-400 text-xl mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-500" placeholder="Cari di riwayat transaksi..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="relative p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="h-8 w-px bg-slate-200"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 leading-none">Budi Santoso</p>
+<p class="text-[11px] text-slate-500 font-medium">Administrator</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center border border-blue-200">
+<span class="material-symbols-outlined text-blue-800">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[260px] pt-16 p-8 max-w-[1280px]">
+<div class="mb-8 flex justify-between items-end">
+<div>
+<nav class="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+<span>Admin</span>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-blue-800">Log Transaksi</span>
+</nav>
+<h2 class="font-h1 text-h1 text-primary">Riwayat Aktivitas Barang</h2>
+<p class="font-body-md text-slate-500 mt-1">Laporan lengkap mutasi inventaris masuk dan keluar dari gudang utama.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-sm rounded-lg hover:bg-slate-50 shadow-sm transition-all">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                    Filter Lanjutan
+                </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold text-sm rounded-lg hover:brightness-110 shadow-sm transition-all">
+<span class="material-symbols-outlined text-lg">download</span>
+                    Ekspor PDF/Excel
+                </button>
+</div>
+</div>
+<!-- Bento Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-blue-50 text-blue-800 rounded-lg">
+<span class="material-symbols-outlined">sync_alt</span>
+</div>
+<span class="text-[10px] font-black text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+12%</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-500">Total Transaksi</p>
+<p class="text-3xl font-bold text-primary">1,284</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-green-50 text-green-800 rounded-lg">
+<span class="material-symbols-outlined">input</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-500">Pemasukan (Bulan Ini)</p>
+<p class="text-3xl font-bold text-green-700">452</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 bg-amber-50 text-amber-800 rounded-lg">
+<span class="material-symbols-outlined">output</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-semibold text-slate-500">Pengambilan (Bulan Ini)</p>
+<p class="text-3xl font-bold text-amber-700">318</p>
+</div>
+</div>
+<div class="bg-primary text-white p-6 rounded-xl border border-primary shadow-lg flex flex-col justify-between overflow-hidden relative">
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">receipt_long</span>
+</div>
+<p class="text-sm font-semibold opacity-80 relative z-10">Status Transaksi</p>
+<p class="text-2xl font-bold relative z-10">Semua Berhasil</p>
+<div class="mt-4 flex items-center gap-1.5 relative z-10">
+<div class="h-1.5 flex-1 bg-white/20 rounded-full overflow-hidden">
+<div class="h-full bg-white w-[100%]"></div>
+</div>
+<span class="text-xs font-bold">100%</span>
+</div>
+</div>
+</div>
+<!-- Transaction Table -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-ambient overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+<h3 class="font-h3 text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-800">list_alt</span>
+                    Daftar Mutasi Terbaru
+                </h3>
+<div class="flex items-center gap-4">
+<span class="text-xs font-medium text-slate-500">Menampilkan 1-10 dari 1,284 data</span>
+<div class="flex gap-1">
+<button class="p-1 hover:bg-slate-100 rounded"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="p-1 hover:bg-slate-100 rounded"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-slate-500 border-b border-slate-200">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Waktu</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Nama Barang</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Tipe</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-center">Jumlah</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider">Pengguna</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900">24 Okt 2023</span>
+<span class="text-xs text-slate-500">14:30 WIB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center overflow-hidden">
+<img alt="Laptop" class="w-full h-full object-cover" data-alt="A high-quality product photography of a modern laptop, shot with professional studio lighting on a neutral gray background. The image is clean, sharp, and emphasizes the technology and build quality of the equipment, maintaining the corporate minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPVx5bHnlly2DXNYNIgx1tPwIzp40KU9twS77AYoEmGo1jYxzMqrZIhk_7c9IASzHF__GJWdNIt218KOJAa8izECOYDqBM6NjVr2D4egMs_T5s7-U6wz3RbkR5vVQOAnw5qiOtdCi_zYhNJqx5xv6u8X4cs81vDqZbDAWviBNO-DzFDDlUu6syuIprgKsKc89wCw8nt4pyRqU_Eb28sA_mDgJ_1ixmrtLAxAwJt5IYyaPWWWfn24Zw4KYKkPHpUOE302nXJ2UgHnlR"/>
+</div>
+<span class="text-sm font-semibold text-slate-900">Laptop ASUS Vivobook 14</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[11px] font-bold border border-green-200">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Pemasukan
+                                </span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-900">5 Unit</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-800">RB</div>
+<span class="text-sm font-medium text-slate-700">Rahmat Basuki</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-slate-400 hover:text-blue-800 transition-colors">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900">24 Okt 2023</span>
+<span class="text-xs text-slate-500">11:15 WIB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center overflow-hidden">
+<img alt="Projector" class="w-full h-full object-cover" data-alt="A sleek, modern white digital projector designed for educational use, captured in a bright studio environment with soft shadows. The visual style is minimal and high-end, fitting for an institutional asset management interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANQnpfB4a8m9Wd0ZtTIZ5EV1vI64jF7yxQvDmES4AAgcd20SB2DGrkp7Bcm9yP-M8E0wGNRNy-mqWvTZ6VJpbj64caHjNvUv8Ju9y3agNT5eIaBUTknXtf8RiuD7hvsbmygIfaL6zfmY5G2Y47ulvA8arOs5EOadgMccHtSeQ7dNKF0XAED97Gk4yMIV0mGiVTu970r9upP4difbf9PPVRHPqn5A15j_uRwZdfI0tkL-PmRa8EtEugg6AQVcG2LdUNNRBehiMRoEQ4"/>
+</div>
+<span class="text-sm font-semibold text-slate-900">Proyektor Epson EB-X500</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                    Pengambilan
+                                </span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-900">2 Unit</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-purple-100 flex items-center justify-center text-[10px] font-bold text-purple-800">SN</div>
+<span class="text-sm font-medium text-slate-700">Siti Nurhaliza</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-slate-400 hover:text-blue-800 transition-colors">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900">23 Okt 2023</span>
+<span class="text-xs text-slate-500">16:45 WIB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center overflow-hidden">
+<img alt="Tablet" class="w-full h-full object-cover" data-alt="Close-up of several modern tablets stacked neatly, showing high-resolution displays and thin metallic bezels. Bright, airy lighting highlights the premium build materials, reflecting a clean school resource management theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS0IVW_GMhhBziAPWrfK1BSKPVt1WVKppoCMN-38Srd7zvBeSczwf30zNPicCif9MTLfCaJlDmn_hSfVBWPQ_tWcXeaig58JZZdIpouruyvMEXpQ6Z8AIXKHj0m36cCJrEQXIOHfv2JWkmQ03IToGgT3q7gOUXRimCCHNI7jUCcFP7vo1FLgmzQz_C97kKespBnmg00HKnxDlVBPiBI59sV9YQVbC5MBCOUNJ_rUzavN9QpSTdxsG59ikGJHlTNQ93tyLQfaPCVy0F"/>
+</div>
+<span class="text-sm font-semibold text-slate-900">Samsung Galaxy Tab S7</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[11px] font-bold border border-green-200">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Pemasukan
+                                </span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-900">10 Unit</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-[10px] font-bold text-emerald-800">AS</div>
+<span class="text-sm font-medium text-slate-700">Agus Setiawan</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-slate-400 hover:text-blue-800 transition-colors">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900">23 Okt 2023</span>
+<span class="text-xs text-slate-500">09:00 WIB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center overflow-hidden text-slate-400">
+<span class="material-symbols-outlined">print</span>
+</div>
+<span class="text-sm font-semibold text-slate-900">Printer HP LaserJet Pro</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                    Pengambilan
+                                </span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-900">1 Unit</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center text-[10px] font-bold text-pink-800">DW</div>
+<span class="text-sm font-medium text-slate-700">Dian Wahyuni</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-slate-400 hover:text-blue-800 transition-colors">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900">22 Okt 2023</span>
+<span class="text-xs text-slate-500">13:20 WIB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center overflow-hidden text-slate-400">
+<span class="material-symbols-outlined">router</span>
+</div>
+<span class="text-sm font-semibold text-slate-900">Router Cisco ISR 4331</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[11px] font-bold border border-green-200">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Pemasukan
+                                </span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="text-sm font-bold text-slate-900">3 Unit</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-800">RB</div>
+<span class="text-sm font-medium text-slate-700">Rahmat Basuki</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-slate-400 hover:text-blue-800 transition-colors">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-6 bg-slate-50/30 flex items-center justify-between border-t border-slate-100">
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-white border border-slate-200 text-xs font-bold text-slate-600 rounded shadow-sm hover:bg-slate-50 disabled:opacity-50" disabled="">Sebelumnya</button>
+<button class="px-3 py-1 bg-primary text-white text-xs font-bold rounded shadow-sm">1</button>
+<button class="px-3 py-1 bg-white border border-slate-200 text-xs font-bold text-slate-600 rounded shadow-sm hover:bg-slate-50">2</button>
+<button class="px-3 py-1 bg-white border border-slate-200 text-xs font-bold text-slate-600 rounded shadow-sm hover:bg-slate-50">3</button>
+<button class="px-3 py-1 bg-white border border-slate-200 text-xs font-bold text-slate-600 rounded shadow-sm hover:bg-slate-50">Selanjutnya</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500">Baris per halaman:</span>
+<select class="text-xs font-bold border-slate-200 rounded-lg p-1 pr-6 focus:ring-blue-500">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+</div>
+<!-- System Status Summary Footer -->
+<div class="mt-8 bg-blue-900 text-white rounded-2xl p-8 flex items-center justify-between shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="text-xl font-bold mb-2">Butuh bantuan rekonsiliasi data?</h4>
+<p class="text-blue-200 max-w-md">Jika Anda menemukan ketidaksesuaian antara jumlah fisik dan catatan digital, gunakan modul Verifikasi Inventaris.</p>
+</div>
+<button class="relative z-10 px-6 py-3 bg-white text-blue-900 font-black rounded-xl hover:bg-blue-50 transition-all flex items-center gap-2">
+                Hubungi Support
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-800/30 rounded-full blur-3xl"></div>
+<div class="absolute right-20 -bottom-20 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+</div>
+</main>
+</body></html>

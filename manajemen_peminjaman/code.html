@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#58bcfd",
+                    "on-surface-variant": "#42474f",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#001c37",
+                    "on-primary-container": "#8ebdf9",
+                    "surface-variant": "#e0e3e5",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#532800",
+                    "on-secondary-fixed": "#001e2f",
+                    "primary": "#00355f",
+                    "tertiary-fixed": "#ffdcc4",
+                    "surface-container-high": "#e6e8ea",
+                    "inverse-primary": "#a0c9ff",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface-bright": "#f7f9fb",
+                    "background": "#f7f9fb",
+                    "on-primary-fixed-variant": "#07497d",
+                    "on-secondary-fixed-variant": "#004b6f",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#f7f9fb",
+                    "on-tertiary-container": "#f9a767",
+                    "on-background": "#191c1e",
+                    "surface-tint": "#2d6197",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#004a6d",
+                    "on-surface": "#191c1e",
+                    "surface-container-low": "#f2f4f6",
+                    "outline-variant": "#c2c7d1",
+                    "tertiary-container": "#743b00",
+                    "inverse-surface": "#2d3133",
+                    "secondary-fixed": "#cae6ff",
+                    "outline": "#727780",
+                    "surface-container": "#eceef0",
+                    "on-tertiary-fixed": "#2f1400",
+                    "inverse-on-surface": "#eff1f3",
+                    "primary-fixed-dim": "#a0c9ff",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#d2e4ff",
+                    "primary-container": "#0f4c81",
+                    "tertiary-fixed-dim": "#ffb780",
+                    "surface-dim": "#d8dadc",
+                    "secondary-fixed-dim": "#8ccdff",
+                    "secondary": "#006492",
+                    "on-tertiary-fixed-variant": "#6f3800"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "260px",
+                    "gutter": "24px",
+                    "base": "8px",
+                    "container-margin": "32px",
+                    "table-row-height": "56px"
+            },
+            "fontFamily": {
+                    "h1": ["Public Sans"],
+                    "h2": ["Public Sans"],
+                    "body-md": ["Inter"],
+                    "h3": ["Public Sans"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "status-badge": ["Inter"]
+            },
+            "fontSize": {
+                    "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "h3": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "status-badge": ["12px", {"lineHeight": "12px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] border-r bg-white border-slate-200 flex flex-col py-6 px-4 gap-2 z-40">
+<div class="flex items-center gap-3 px-2 mb-8">
+<img alt="Logo Sekolah" class="w-10 h-10 object-contain" data-alt="A professional and clean minimalist school logo emblem featuring academic motifs such as a book or a torch. The logo is designed with a deep corporate blue and white color scheme, sitting on a crisp white background. The lighting is even and studio-quality, emphasizing the institutional and authoritative nature of a modern educational management system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQumOfoBRQsEYQ_E2Dj57ubu_q-eQA8rUufuVz2s_wiavJLSfGvDhgZP74tAqGqXGLiLPUG_K3_dtO25B9w0lTj0zgfmHjxLUiT1P9tdcvtJRAGbuyzs2XSJ0myJuJSbJW2Ssc0I19mGzCTz2tYe6kMLCRBoThI4Cm-Ov4c2EKkC8nTWuDaXO4vth937BXOxIx6mN8rzHHrcVoVA7NKpM2antuez3q88FE4PZ9bPlIN1gAh1pVNCusAstdNcKDSkoKsTR8Ll8PRHIE"/>
+<div>
+<h1 class="text-lg font-black text-blue-900 leading-tight">InventarisSakti</h1>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Manajemen Aset Sekolah</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-medium text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-medium text-sm">Inventaris</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="font-medium text-sm">Log Transaksi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-50 text-blue-900 border-r-4 border-blue-800 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">assignment_return</span>
+<span class="font-medium text-sm">Peminjaman</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-[20px]">output</span>
+<span class="font-medium text-sm">Pengambilan</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-slate-100 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Pengaturan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span class="text-sm font-medium">Bantuan</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="ml-[260px] min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-6 sticky top-0 z-30 h-16 bg-white border-b border-slate-200 shadow-none">
+<div class="flex items-center gap-4">
+<h2 class="font-h2 text-h2 text-primary">Manajemen Peminjaman</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-sm w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Cari peminjam atau barang..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-slate-200">
+<div class="text-right">
+<p class="text-xs font-bold text-on-background">Admin Sekolah</p>
+<p class="text-[10px] text-slate-500 uppercase">Super Admin</p>
+</div>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRsGh56Hc9Zn9IZMI_F-PzrFg3OUydQpDqc2pKdrUn0D3Sewfs3WQyZq2wuztpSWTxpjfQCNYo2uikux9LFYQNht_p9zhuRgjH7q42Wz3wDKzY-QigC3tcN5UejBpBVyrik0681P42fWh5KNOuX0ZemUHrC1fayT1ZiYBcFWymJXhHtGk-ZZoyaUEU6NW5sG4jX5MIcT92bD1Hq5zAsGAJnUU4SgUPeneRXH7Rg17rWBWKbarLlGAcmzTxuGL3d22i1hY7583VXJel"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-container-margin max-w-[1280px] w-full mx-auto">
+<!-- Summary Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">pending_actions</span>
+<p class="text-label-caps text-slate-500">TOTAL DIPINJAM</p>
+<h3 class="text-h1 font-h1 text-primary">124</h3>
+<p class="text-xs text-green-600 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                        +12% Minggu ini
+                    </p>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2 border-l-4 border-l-error">
+<span class="material-symbols-outlined text-error text-3xl">running_with_errors</span>
+<p class="text-label-caps text-slate-500">TERLAMBAT</p>
+<h3 class="text-h1 font-h1 text-error">18</h3>
+<p class="text-xs text-error font-semibold flex items-center gap-1">
+                        Tindakan diperlukan segera
+                    </p>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2">
+<span class="material-symbols-outlined text-secondary text-3xl">event_repeat</span>
+<p class="text-label-caps text-slate-500">JATUH TEMPO HARI INI</p>
+<h3 class="text-h1 font-h1 text-secondary">09</h3>
+<p class="text-xs text-slate-500 font-semibold">Siapkan konfirmasi ulang</p>
+</div>
+<div class="bg-primary p-6 rounded-xl shadow-lg flex flex-col justify-center gap-3">
+<p class="text-white font-medium text-sm">Butuh Peminjaman Baru?</p>
+<button class="bg-white text-primary px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-blue-50 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                        TAMBAH PINJAMAN
+                    </button>
+</div>
+</div>
+<!-- Table Section -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
+<div class="flex items-center gap-3">
+<span class="font-h3 text-h3 text-blue-900">Daftar Aktif Peminjaman</span>
+<span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-bold rounded-full">BARANG SEKOLAH</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                            Filter
+                        </button>
+<button class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">download</span>
+                            Ekspor PDF
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 border-b border-slate-200">
+<th class="px-6 py-4 text-label-caps text-slate-500 uppercase">Peminjam</th>
+<th class="px-6 py-4 text-label-caps text-slate-500 uppercase">Item</th>
+<th class="px-6 py-4 text-label-caps text-slate-500 uppercase">Tgl Pinjam</th>
+<th class="px-6 py-4 text-label-caps text-slate-500 uppercase">Jatuh Tempo</th>
+<th class="px-6 py-4 text-label-caps text-slate-500 uppercase">Status</th>
+<th class="px-6 py-4 text-label-caps text-slate-500 uppercase text-center">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1: Terlambat -->
+<tr class="hover:bg-slate-50/80 transition-colors h-table-row-height">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs uppercase">RA</div>
+<div>
+<p class="font-bold text-sm text-on-background">Rizky Amanda</p>
+<p class="text-[11px] text-slate-500">GURU-08221</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-sm text-primary">Proyektor Epson EB-X400</span>
+<span class="text-[11px] text-slate-400">ID: PJ-2023-001</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-body-md">12 Okt 2023</td>
+<td class="px-6 py-4 text-sm text-error font-bold font-body-md">19 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-error-container text-on-error-container text-status-badge rounded-full uppercase">Terlambat</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-primary-container transition-all active:scale-95">
+                                        KEMBALIKAN
+                                    </button>
+</td>
+</tr>
+<!-- Row 2: Dipinjam -->
+<tr class="hover:bg-slate-50/80 transition-colors h-table-row-height">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs uppercase">BS</div>
+<div>
+<p class="font-bold text-sm text-on-background">Budi Santoso</p>
+<p class="text-[11px] text-slate-500">STAF-02201</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-sm text-primary">Kamera DSLR Canon EOS 80D</span>
+<span class="text-[11px] text-slate-400">ID: KM-2023-042</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-body-md">20 Okt 2023</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-body-md">27 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-secondary-container/20 text-on-secondary-container text-status-badge rounded-full uppercase border border-secondary-container/30">Dipinjam</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-primary-container transition-all active:scale-95">
+                                        KEMBALIKAN
+                                    </button>
+</td>
+</tr>
+<!-- Row 3: Dipinjam -->
+<tr class="hover:bg-slate-50/80 transition-colors h-table-row-height">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs uppercase">DN</div>
+<div>
+<p class="font-bold text-sm text-on-background">Dewi Nuraini</p>
+<p class="text-[11px] text-slate-500">GURU-08225</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-sm text-primary">Microphone Wireless Shure</span>
+<span class="text-[11px] text-slate-400">ID: AU-2023-015</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-body-md">22 Okt 2023</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-body-md">29 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-secondary-container/20 text-on-secondary-container text-status-badge rounded-full uppercase border border-secondary-container/30">Dipinjam</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-primary-container transition-all active:scale-95">
+                                        KEMBALIKAN
+                                    </button>
+</td>
+</tr>
+<!-- Row 4: Terlambat -->
+<tr class="hover:bg-slate-50/80 transition-colors h-table-row-height">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs uppercase">IK</div>
+<div>
+<p class="font-bold text-sm text-on-background">Indra Kusuma</p>
+<p class="text-[11px] text-slate-500">STAF-02205</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-sm text-primary">Laptop Dell Latitude 5420</span>
+<span class="text-[11px] text-slate-400">ID: LP-2023-112</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 font-body-md">15 Okt 2023</td>
+<td class="px-6 py-4 text-sm text-error font-bold font-body-md">22 Okt 2023</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-error-container text-on-error-container text-status-badge rounded-full uppercase">Terlambat</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-primary-container transition-all active:scale-95">
+                                        KEMBALIKAN
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-6 bg-slate-50/30 border-t border-slate-200 flex justify-between items-center">
+<p class="text-xs text-slate-500 font-medium">Menampilkan 4 dari 124 data peminjaman</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white text-xs font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Stats / Note Section -->
+<div class="mt-8 flex flex-col md:flex-row gap-6">
+<div class="flex-1 bg-white p-6 rounded-xl border border-slate-200 flex items-start gap-4 shadow-sm">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">info</span>
+</div>
+<div>
+<h4 class="font-bold text-sm text-on-background mb-1">Kebijakan Pengembalian</h4>
+<p class="text-xs text-slate-500 leading-relaxed">Barang yang terlambat lebih dari 3 hari akan otomatis mengirimkan notifikasi ke email peminjam dan atasan terkait. Harap pastikan kondisi barang diperiksa saat pengembalian.</p>
+</div>
+</div>
+<div class="flex-1 bg-blue-900 p-6 rounded-xl text-white relative overflow-hidden flex items-center">
+<div class="relative z-10">
+<h4 class="font-bold text-lg mb-1">Butuh Bantuan Cepat?</h4>
+<p class="text-xs text-blue-200">Hubungi IT Support Sekolah untuk masalah teknis peminjaman asset.</p>
+<button class="mt-3 px-4 py-1.5 bg-white text-blue-900 rounded-lg text-xs font-bold hover:bg-blue-50 transition-all">Hubungi CS</button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[100px] text-white/10 opacity-30 pointer-events-none">support_agent</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group">
+<span class="material-symbols-outlined text-2xl">add</span>
+<span class="absolute right-full mr-4 px-3 py-1.5 bg-on-background text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
+            Buat Pinjaman Baru
+        </span>
+</button>
+</body></html>
