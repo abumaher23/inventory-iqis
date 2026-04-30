@@ -1,9 +1,17 @@
-import { NavLink, useLocation, Outlet } from 'react-router-dom';
+import { NavLink, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-export default function Layout({ children }) {
+export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const navItems = [
     { path: '/', icon: 'dashboard', label: 'Dashboard' },
@@ -11,6 +19,10 @@ export default function Layout({ children }) {
     { path: '/transactions', icon: 'receipt_long', label: 'Log Transaksi' },
     { path: '/borrowing', icon: 'assignment_return', label: 'Peminjaman' },
     { path: '/withdrawal', icon: 'output', label: 'Pengambilan' },
+  ];
+
+  const bottomNavItems = [
+    { path: '/accounts', icon: 'manage_accounts', label: 'Akun' },
   ];
 
   const getPageTitle = () => {
@@ -55,6 +67,19 @@ export default function Layout({ children }) {
             <span className="material-symbols-outlined text-sm">add</span>
             Tambah Barang
           </NavLink>
+          {bottomNavItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-blue-800' : 'text-slate-600 hover:bg-slate-50'}`
+              }
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+              <span className="text-sm font-medium">{item.label}</span>
+            </NavLink>
+          ))}
           <NavLink to="/settings" className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-blue-800' : 'text-slate-600 hover:bg-slate-50'}`}>
             <span className="material-symbols-outlined text-[20px]">settings</span>
             <span className="text-sm font-medium">Pengaturan</span>
@@ -87,17 +112,14 @@ export default function Layout({ children }) {
                 <span className="material-symbols-outlined">notifications</span>
                 <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
               </button>
-              <button className="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors">
-                <span className="material-symbols-outlined">help_outline</span>
-              </button>
             </div>
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
               <div className="text-right">
-                <p className="text-xs font-bold text-on-background">Admin Sekolah</p>
-                <p className="text-[10px] text-slate-500 uppercase">Super Admin</p>
+                <p className="text-xs font-bold text-on-background">{user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Admin Sekolah'}</p>
+                <p className="text-[10px] text-slate-500 uppercase">{user?.role || 'Super Admin'}</p>
               </div>
-              <div className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white font-bold text-xs">
-                AD
+              <div className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white font-bold text-xs cursor-pointer" onClick={handleLogout} title="Logout">
+                {user?.first_name ? user.first_name.charAt(0).toUpperCase() : 'AD'}
               </div>
             </div>
           </div>

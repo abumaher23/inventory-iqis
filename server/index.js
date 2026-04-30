@@ -23,6 +23,16 @@ async function initDB() {
   const client = await pool.connect();
   try {
     await client.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        instansi VARCHAR(100),
+        role VARCHAR(50) DEFAULT 'user',
+        email VARCHAR(100) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL
+      );
+
       CREATE TABLE IF NOT EXISTS inventory (
         id VARCHAR(50) PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
@@ -87,6 +97,14 @@ async function initDB() {
         ('Keluar', 'Laptop Dell Latitude 3420', '45 Menit Lalu', 'Siti Aminah', 'Peminjaman'),
         ('Kembali', 'Proyektor Epson EB-X400', '10 Menit Lalu', 'Budi Santoso', 'Pengembalian'),
         ('Keluar', 'Kabel HDMI 3M', '1 Hari Lalu', 'Admin Lab', 'Pengambilan')
+      `);
+    }
+
+    const userCheck = await client.query('SELECT COUNT(*) FROM users');
+    if (parseInt(userCheck.rows[0].count) === 0) {
+      await client.query(`
+        INSERT INTO users (first_name, last_name, instansi, role, email, password) VALUES
+        ('Admin', 'Sekolah', 'SMA Contoh', 'Super Admin', 'admin@iqis.id', 'admin123')
       `);
     }
   } catch (err) {
@@ -201,6 +219,95 @@ app.post('/api/transactions', async (req, res) => {
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'IQIS API is running' });
+});
+
+// Login
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const { rows } = await pool.query(
+      'SELECT * FROM users WHERE email = $1 AND password = $2',
+      [email, password]
+    );
+
+    if (rows.length === 0) {
+      return res.status(401).json({ message: 'Email atau password salah' });
+    }
+
+    const user = rows[0];
+    res.json({
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, first_name, last_name, instansi, role, email FROM users ORDER BY id'
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Create new user
+app.post('/api/users', async (req, res) => {
+  const { first_name, last_name, instansi, role, email, password } = req.body;
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO users (first_name, last_name, instansi, role, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, first_name, last_name, instansi, role, email',
+      [first_name, last_name, instansi, role, email, password]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ error: 'Email sudah digunakan' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update user
+app.put('/api/users/:id', async (req, res) => {
+  const { first_name, last_name, instansi, role, email, password } = req.body;
+  try {
+    let query, params;
+    if (password) {
+      query =
+        'UPDATE users SET first_name=$1, last_name=$2, instansi=$3, role=$4, email=$5, password=$6 WHERE id=$7 RETURNING id, first_name, last_name, instansi, role, email';
+      params = [first_name, last_name, instansi, role, email, password, req.params.id];
+    } else {
+      query =
+        'UPDATE users SET first_name=$1, last_name=$2, instansi=$3, role=$4, email=$5 WHERE id=$6 RETURNING id, first_name, last_name, instansi, role, email';
+      params = [first_name, last_name, instansi, role, email, req.params.id];
+    }
+    const { rows } = await pool.query(query, params);
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete user
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM users WHERE id=$1', [req.params.id]);
+    res.json({ message: 'User deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Start server
