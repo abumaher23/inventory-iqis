@@ -1,4 +1,17 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// API URL configuration
+// Priority: env var > cyclic.sh (if on vercel) > localhost
+const getAPIUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // Auto-detect Cyclic backend when on Vercel
+  if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+    return 'https://app-name.cyclic.app/api'; // TODO: Replace with actual Cyclic URL after deploy
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_URL = getAPIUrl();
 
 export async function fetchInventory() {
   const res = await fetch(`${API_URL}/inventory`);
