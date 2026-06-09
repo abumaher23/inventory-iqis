@@ -1,12 +1,12 @@
 // API URL configuration
-// Priority: env var > cyclic.sh (if on vercel) > localhost
+// Priority: env var > same-origin /api (Vercel) > localhost
 const getAPIUrl = () => {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
-  // Auto-detect Cyclic backend when on Vercel
-  if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
-    return 'https://app-name.cyclic.app/api'; // TODO: Replace with actual Cyclic URL after deploy
+  // Same-origin: frontend + API on same domain (Vercel serverless)
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+    return '/api';
   }
   return 'http://localhost:3001/api';
 };

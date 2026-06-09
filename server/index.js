@@ -646,9 +646,14 @@ app.put('/api/settings', async (req, res) => {
   }
 });
 
-// Start server
-initDB().then(() => {
+// Initialize database tables (runs on every cold start, idempotent)
+initDB().catch(err => console.error('DB init failed:', err));
+
+// Start server (only when run directly, not via Vercel serverless)
+if (require.main === module) {
   app.listen(port, () => {
     console.log(`IQIS Server running on port ${port}`);
   });
-});
+}
+
+module.exports = app;
