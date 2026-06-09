@@ -3,8 +3,10 @@ import { AuthProvider } from './context/AuthContext';
 import { InventoryProvider } from './context/InventoryContext';
 import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import InventoryList from './pages/InventoryList';
 import BorrowingManagement from './pages/BorrowingManagement';
@@ -23,9 +25,10 @@ export default function App() {
       <InventoryProvider>
         <ToastProvider>
           <BrowserRouter>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route
                 element={
                   <ProtectedRoute>
                     <Layout />
@@ -36,13 +39,21 @@ export default function App() {
                 <Route path="/inventory" element={<InventoryList />} />
                 <Route path="/borrowing" element={<BorrowingManagement />} />
                 <Route path="/borrow-form" element={<BorrowForm />} />
-                <Route path="/transactions" element={<TransactionLogs />} />
-                <Route path="/incoming" element={<IncomingForm />} />
                 <Route path="/withdrawal" element={<WithdrawalForm />} />
-                <Route path="/accounts" element={<AccountManagement />} />
-                <Route path="/settings" element={<Settings />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="*" element={<NotFound />} />
+              </Route>
+              <Route
+                element={
+                  <AdminRoute>
+                    <Layout />
+                  </AdminRoute>
+                }
+              >
+                <Route path="/transactions" element={<TransactionLogs />} />
+                <Route path="/incoming" element={<IncomingForm />} />
+                <Route path="/accounts" element={<AccountManagement />} />
+                <Route path="/settings" element={<Settings />} />
               </Route>
             </Routes>
           </BrowserRouter>

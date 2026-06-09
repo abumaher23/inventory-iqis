@@ -86,7 +86,10 @@ export default function Login() {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-on-surface-variant">
-            Demo: email: admin@iqis.id, password: admin123
+            Belum punya akun?{' '}
+            <a href="/register" className="text-primary font-semibold hover:underline">
+              Daftar di sini
+            </a>
           </p>
         </div>
       </div>

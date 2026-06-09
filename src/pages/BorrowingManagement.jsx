@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import * as api from '../api';
 
 export default function BorrowingManagement() {
   const [borrowings, setBorrowings] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const { addToast } = useToast();
 
   const getDynamicStatus = (borrowing) => {
     if (borrowing.status === 'Dikembalikan') return 'Dikembalikan';
@@ -26,10 +30,37 @@ export default function BorrowingManagement() {
 
   const handleReturn = async (id) => {
     try {
+      const borrowing = borrowings.find(b => b.id === id);
+      if (!borrowing) return addToast('Data peminjaman tidak ditemukan', 'error');
+
+      const inventory = await api.fetchInventory();
+      const item = inventory.find(i => i.id === borrowing.item_id);
+      if (!item) return addToast('Barang tidak ditemukan di inventaris', 'error');
+
+      const newStock = item.stock + 1;
+      const updatedItem = {
+        ...item,
+        stock: newStock,
+        status: newStock > 20 ? 'Tersedia' : newStock > 5 ? 'Hampir Habis' : newStock === 0 ? 'Habis' : 'Kritis',
+      };
+      await api.updateInventory(updatedItem);
       await api.updateBorrowing(id, { status: 'Dikembalikan' });
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      await api.addTransaction({
+        type: 'Kembali',
+        item: item.name,
+        date: formattedDate,
+        user_name: borrowing.borrower,
+        category: 'Pengembalian',
+        item_id: item.id,
+        quantity: 1,
+      });
       setBorrowings(borrowings.map(b => b.id === id ? { ...b, status: 'Dikembalikan' } : b));
+      addToast('Barang berhasil dikembalikan', 'success');
     } catch (err) {
       console.error('Error returning:', err);
+      addToast('Gagal memproses pengembalian', 'error');
     }
   };
 
@@ -38,6 +69,13 @@ export default function BorrowingManagement() {
   );
 
   const activeBorrowings = borrowings.filter(b => b.status !== 'Dikembalikan');
+  
+  // Calculate borrowings due today (not returned)
+  const today = new Date();
+  const todayString = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+  const dueToday = borrowings.filter(b => 
+    b.due_date === todayString && b.status !== 'Dikembalikan'
+  ).length;
 
   if (loading) return <div className="p-8 text-center">Loading...</div>;
 
@@ -69,11 +107,11 @@ export default function BorrowingManagement() {
           <p className="text-label-caps text-slate-500 uppercase">Terlambat</p>
           <h3 className="text-h1 font-h1 text-error">{activeBorrowings.filter(b => b.status === 'Terlambat').length}</h3>
         </div>
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2">
-          <span className="material-symbols-outlined text-secondary text-3xl">event_repeat</span>
-          <p className="text-label-caps text-slate-500 uppercase">Jatuh Tempo Hari Ini</p>
-          <h3 className="text-h1 font-h1 text-secondary">09</h3>
-        </div>
+<div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-2">
+  <span className="material-symbols-outlined text-secondary text-3xl">event_repeat</span>
+  <p className="text-label-caps text-slate-500 uppercase">Jatuh Tempo Hari Ini</p>
+  <h3 className="text-h1 font-h1 text-secondary">{dueToday}</h3>
+</div>
         <div className="bg-primary p-6 rounded-xl shadow-lg flex flex-col justify-center gap-3">
           <p className="text-white font-medium text-sm">Butuh Peminjaman Baru?</p>
           <Link to="/borrow-form" className="bg-white text-primary px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-blue-50">
@@ -90,16 +128,18 @@ export default function BorrowingManagement() {
             <span className="font-h3 text-h3 text-blue-900">Daftar Aktif Peminjaman</span>
             <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-bold rounded-full">BARANG SEKOLAH</span>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-              <span className="material-symbols-outlined text-lg">filter_list</span>
-              Filter
-            </button>
-            <button className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-              <span className="material-symbols-outlined text-lg">download</span>
-              Ekspor PDF
-            </button>
-          </div>
+          {user?.role === 'Super Admin' && (
+            <div className="flex items-center gap-2">
+              <button className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                <span className="material-symbols-outlined text-lg">filter_list</span>
+                Filter
+              </button>
+              <button className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                <span className="material-symbols-outlined text-lg">download</span>
+                Ekspor PDF
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="overflow-x-auto">
@@ -142,7 +182,7 @@ export default function BorrowingManagement() {
                     {getStatusBadge(b)}
                   </td>
                   <td className="px-6 py-4 text-center">
-                    {b.status !== 'Dikembalikan' && (
+                    {user?.role === 'Super Admin' && b.status !== 'Dikembalikan' && (
                       <button
                         onClick={() => handleReturn(b.id)}
                         className="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-primary-container"

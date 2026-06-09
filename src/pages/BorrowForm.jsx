@@ -1,23 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
+import SearchableSelect from '../components/SearchableSelect';
 import * as api from '../api';
 
 export default function BorrowForm() {
   const navigate = useNavigate();
+  const { addToast } = useToast();
+  const [inventory, setInventory] = useState([]);
+  const todayStr = new Date().toISOString().split('T')[0];
   const [formData, setFormData] = useState({
     borrower: '',
     borrowerId: '',
     itemId: '',
-    borrowDate: new Date().toISOString().split('T')[0],
+    borrowDate: todayStr,
     dueDate: '',
+    date: todayStr,
   });
+
+  useEffect(() => {
+    api.fetchInventory().then(data => setInventory(data)).catch(console.error);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const inventory = await api.fetchInventory();
       const item = inventory.find(i => i.id === formData.itemId);
-      if (!item) return alert('Barang tidak ditemukan');
+      if (!item) return addToast('Barang tidak ditemukan', 'error');
+
+      const newStock = item.stock - 1;
+      if (newStock < 0) {
+        return addToast('Stok barang tidak mencukupi untuk dipinjam', 'error');
+      }
+
+      const updatedItem = {
+        ...item,
+        stock: newStock,
+        status: newStock === 0 ? 'Habis' : newStock <= 3 ? 'Kritis' : newStock <= 10 ? 'Hampir Habis' : 'Tersedia',
+      };
+      await api.updateInventory(updatedItem);
 
       const newBorrowing = {
         borrower: formData.borrower,
@@ -30,19 +52,23 @@ export default function BorrowForm() {
       };
 
       await api.addBorrowing(newBorrowing);
+      const d = formData.date ? new Date(formData.date + 'T12:00:00') : new Date();
+      const formattedDate = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
       await api.addTransaction({
         type: 'Keluar',
         item: item.name,
-        date: 'Baru Saja',
+        date: formattedDate,
         user_name: formData.borrower,
         category: 'Peminjaman',
+        item_id: item.id,
+        quantity: 1,
       });
 
-      alert('Peminjaman berhasil dicatat!');
+      addToast('Peminjaman berhasil dicatat!', 'success');
       navigate('/borrowing');
     } catch (err) {
       console.error('Error:', err);
-      alert('Gagal mencatat peminjaman');
+      addToast('Gagal mencatat peminjaman', 'error');
     }
   };
 
@@ -82,14 +108,23 @@ export default function BorrowForm() {
 
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">Pilih Barang</label>
-            <select
-              required
-              className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm"
+            <SearchableSelect
+              items={inventory}
               value={formData.itemId}
-              onChange={(e) => setFormData({...formData, itemId: e.target.value})}
-            >
-              <option value="">-- Pilih Barang --</option>
-            </select>
+              onChange={(id) => setFormData({...formData, itemId: id})}
+              placeholder="Pilih barang..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">Tanggal Transaksi</label>
+            <input
+              type="date"
+              required
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+              value={formData.date}
+              onChange={(e) => setFormData({...formData, date: e.target.value})}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">

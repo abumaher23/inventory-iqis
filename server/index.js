@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -43,7 +43,8 @@ async function initDB() {
         category VARCHAR(100),
         stock INTEGER DEFAULT 0,
         status VARCHAR(50),
-        type VARCHAR(20) DEFAULT 'asset'
+        type VARCHAR(20) DEFAULT 'asset',
+        unit VARCHAR(100) DEFAULT 'Unit'
       );
       
       CREATE TABLE IF NOT EXISTS borrowings (
@@ -65,52 +66,49 @@ async function initDB() {
         user_name VARCHAR(100),
         category VARCHAR(50)
       );
-    `);
+      
+      ALTER TABLE transactions ADD COLUMN IF NOT EXISTS item_id VARCHAR(50);
+      ALTER TABLE transactions ADD COLUMN IF NOT EXISTS quantity INTEGER DEFAULT 0;
+      ALTER TABLE inventory ADD COLUMN IF NOT EXISTS unit VARCHAR(100) DEFAULT 'Unit';
+      
+      CREATE TABLE IF NOT EXISTS funding_sources (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) UNIQUE NOT NULL
+      );
+      
+       CREATE TABLE IF NOT EXISTS departments (
+         id SERIAL PRIMARY KEY,
+         name VARCHAR(100) UNIQUE NOT NULL
+       );
+       
+       CREATE TABLE IF NOT EXISTS settings (
+         id SERIAL PRIMARY KEY,
+         school_name VARCHAR(100) DEFAULT 'SMP Negeri 01',
+         address TEXT DEFAULT 'Jl. Pendidikan No. 123',
+         phone VARCHAR(20) DEFAULT '021-1234567',
+         low_stock_threshold INTEGER DEFAULT 10,
+         critical_stock_threshold INTEGER DEFAULT 3
+       );
+     `);
+    
+    // Insert default funding sources if table is empty
+    const fundingSourcesCheck = await client.query('SELECT COUNT(*) FROM funding_sources');
+    if (parseInt(fundingSourcesCheck.rows[0].count) === 0) {
+      const fundingSources = ['BOS', 'Hibah', 'APBD', 'Komite Sekolah', 'Lainnya'];
+      for (const source of fundingSources) {
+        await client.query('INSERT INTO funding_sources (name) VALUES ($1)', [source]);
+      }
+    }
+    
+    // Insert default departments if table is empty
+    const departmentsCheck = await client.query('SELECT COUNT(*) FROM departments');
+    if (parseInt(departmentsCheck.rows[0].count) === 0) {
+      const departments = ['Tata Usaha', 'Laboratorium', 'Perpustakaan', 'Guru BK', 'Kesiswaan', 'Kurikulum', 'Lainnya'];
+      for (const dept of departments) {
+        await client.query('INSERT INTO departments (name) VALUES ($1)', [dept]);
+      }
+    }
     console.log('Database initialized successfully');
-    // Seed initial data if tables are empty
-    const invCheck = await client.query('SELECT COUNT(*) FROM inventory');
-    if (parseInt(invCheck.rows[0].count) === 0) {
-      await client.query(`
-        INSERT INTO inventory (id, name, category, stock, status, type) VALUES
-        ('ELC-2023-0041', 'Laptop Chromebook v2', 'Elektronik', 45, 'Tersedia', 'asset'),
-        ('FURN-2022-0112', 'Kursi Lipat Ergonomis', 'Mebel', 12, 'Hampir Habis', 'asset'),
-        ('SPO-2023-0009', 'Bola Basket Molten v7', 'Alat Olahraga', 0, 'Habis', 'asset'),
-        ('LIB-2021-0882', 'Buku Paket Matematika XII', 'Buku & Pustaka', 120, 'Tersedia', 'asset'),
-        ('LAB-2023-0102', 'Mikroskop Binokuler Digital', 'Laboratorium', 8, 'Tersedia', 'asset'),
-        ('ATK-2023-0021', 'Tinta Printer HP 680 Black', 'Alat Tulis Kantor', 2, 'Kritis', 'consumable'),
-        ('ELC-2023-0112', 'Kabel HDMI 3M', 'Elektronik', 5, 'Hampir Habis', 'asset')
-      `);
-    }
-    
-    const borCheck = await client.query('SELECT COUNT(*) FROM borrowings');
-    if (parseInt(borCheck.rows[0].count) === 0) {
-      await client.query(`
-        INSERT INTO borrowings (borrower, borrower_id, item, item_id, borrow_date, due_date, status) VALUES
-        ('Rizky Amanda', 'GURU-08221', 'Proyektor Epson EB-X400', 'PJ-2023-001', '12 Okt 2023', '19 Okt 2023', 'Terlambat'),
-        ('Budi Santoso', 'STAF-02201', 'Kamera DSLR Canon EOS 80D', 'KM-2023-042', '20 Okt 2023', '27 Okt 2023', 'Dipinjam'),
-        ('Dewi Nuraini', 'GURU-08225', 'Microphone Wireless Shure', 'AU-2023-015', '22 Okt 2023', '29 Okt 2023', 'Dipinjam'),
-        ('Indra Kusuma', 'STAF-02205', 'Laptop Dell Latitude 5420', 'LP-2023-112', '15 Okt 2023', '22 Okt 2023', 'Terlambat')
-      `);
-    }
-    
-    const transCheck = await client.query('SELECT COUNT(*) FROM transactions');
-    if (parseInt(transCheck.rows[0].count) === 0) {
-      await client.query(`
-        INSERT INTO transactions (type, item, date, user_name, category) VALUES
-        ('Masuk', '10 Rim Kertas A4', '2 Jam Lalu', 'Admin', 'Restock'),
-        ('Keluar', 'Laptop Dell Latitude 3420', '45 Menit Lalu', 'Siti Aminah', 'Peminjaman'),
-        ('Kembali', 'Proyektor Epson EB-X400', '10 Menit Lalu', 'Budi Santoso', 'Pengembalian'),
-        ('Keluar', 'Kabel HDMI 3M', '1 Hari Lalu', 'Admin Lab', 'Pengambilan')
-      `);
-    }
-
-    const userCheck = await client.query('SELECT COUNT(*) FROM users');
-    if (parseInt(userCheck.rows[0].count) === 0) {
-      await client.query(`
-        INSERT INTO users (first_name, last_name, instansi, role, email, password) VALUES
-        ('Admin', 'Sekolah', 'SMA Contoh', 'Super Admin', 'admin@iqis.id', 'admin123')
-      `);
-    }
   } catch (err) {
     console.error('Error initializing database:', err);
   } finally {
@@ -132,11 +130,17 @@ app.get('/api/inventory', async (req, res) => {
 
 // Add inventory item
 app.post('/api/inventory', async (req, res) => {
-  const { id, name, category, stock, status, type } = req.body;
+  const { id, name, category, stock, status, type, unit } = req.body;
   try {
+    // Check if name already exists (case-insensitive)
+    const check = await pool.query('SELECT * FROM inventory WHERE LOWER(name) = LOWER($1)', [name]);
+    if (check.rows.length > 0) {
+      return res.status(400).json({ error: 'Nama barang sudah ada' });
+    }
+    
     const { rows } = await pool.query(
-      'INSERT INTO inventory (id, name, category, stock, status, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [id, name, category, stock, status, type]
+      'INSERT INTO inventory (id, name, category, stock, status, type, unit) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [id, name, category, stock, status, type, unit]
     );
     res.json(rows[0]);
   } catch (err) {
@@ -146,13 +150,187 @@ app.post('/api/inventory', async (req, res) => {
 
 // Update inventory
 app.put('/api/inventory/:id', async (req, res) => {
-  const { name, category, stock, status, type } = req.body;
+  const { name, category, stock, status, type, unit } = req.body;
   try {
+    // Check if name already exists (excluding current item, case-insensitive)
+    const check = await pool.query('SELECT * FROM inventory WHERE LOWER(name) = LOWER($1) AND id != $2', [name, req.params.id]);
+    if (check.rows.length > 0) {
+      return res.status(400).json({ error: 'Nama barang sudah ada' });
+    }
+    
     const { rows } = await pool.query(
-      'UPDATE inventory SET name=$1, category=$2, stock=$3, status=$4, type=$5 WHERE id=$6 RETURNING *',
-      [name, category, stock, status, type, req.params.id]
+      'UPDATE inventory SET name=$1, category=$2, stock=$3, status=$4, type=$5, unit=$6 WHERE id=$7 RETURNING *',
+      [name, category, stock, status, type, unit, req.params.id]
     );
     res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete inventory
+app.delete('/api/inventory/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM inventory WHERE id=$1', [req.params.id]);
+    res.json({ message: 'Item deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get all categories
+app.get('/api/categories', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM categories ORDER BY name');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add category
+app.post('/api/categories', async (req, res) => {
+  const { name } = req.body;
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO categories (name) VALUES ($1) RETURNING *',
+      [name]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ error: 'Kategori sudah ada' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete category
+app.delete('/api/categories/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM categories WHERE id=$1', [req.params.id]);
+    res.json({ message: 'Category deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Units API
+// Get all units
+app.get('/api/units', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM units ORDER BY name');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Funding Sources API
+// Get all funding sources
+app.get('/api/funding-sources', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM funding_sources ORDER BY name');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add funding source
+app.post('/api/funding-sources', async (req, res) => {
+  const { name } = req.body;
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO funding_sources (name) VALUES ($1) RETURNING *',
+      [name]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ error: 'Sumber dana sudah ada' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete funding source
+app.delete('/api/funding-sources/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM funding_sources WHERE id=$1', [req.params.id]);
+    res.json({ message: 'Funding source deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Departments API
+// Initialize departments table in initDB function
+// Add this to the initDB function's SQL:
+// CREATE TABLE IF NOT EXISTS departments (
+//   id SERIAL PRIMARY KEY,
+//   name VARCHAR(100) UNIQUE NOT NULL
+// );
+
+// Get all departments
+app.get('/api/departments', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM departments ORDER BY name');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add department
+app.post('/api/departments', async (req, res) => {
+  const { name } = req.body;
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO departments (name) VALUES ($1) RETURNING *',
+      [name]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ error: 'Departemen sudah ada' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete department
+app.delete('/api/departments/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM departments WHERE id=$1', [req.params.id]);
+    res.json({ message: 'Department deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add unit
+app.post('/api/units', async (req, res) => {
+  const { name } = req.body;
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO units (name) VALUES ($1) RETURNING *',
+      [name]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ error: 'Unit kerja sudah ada' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete unit
+app.delete('/api/units/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM units WHERE id=$1', [req.params.id]);
+    res.json({ message: 'Unit deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -208,11 +386,11 @@ app.get('/api/transactions', async (req, res) => {
 
 // Add transaction
 app.post('/api/transactions', async (req, res) => {
-  const { type, item, date, user_name, category } = req.body;
+  const { type, item, date, user_name, category, item_id, quantity } = req.body;
   try {
     const { rows } = await pool.query(
-      'INSERT INTO transactions (type, item, date, user_name, category) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [type, item, date, user_name, category]
+      'INSERT INTO transactions (type, item, date, user_name, category, item_id, quantity) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [type, item, date, user_name, category, item_id, quantity || 0]
     );
     res.json(rows[0]);
   } catch (err) {
@@ -220,9 +398,115 @@ app.post('/api/transactions', async (req, res) => {
   }
 });
 
+// Cancel transaction (reverse stock)
+app.put('/api/transactions/:id/cancel', async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    
+    const { rows } = await client.query('SELECT * FROM transactions WHERE id=$1', [req.params.id]);
+    if (rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'Transaksi tidak ditemukan' });
+    }
+    
+    const transaction = rows[0];
+    
+    if (transaction.category === 'Dibatalkan') {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Transaksi sudah dibatalkan' });
+    }
+    
+    if (!transaction.item_id || !transaction.quantity) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Transaksi ini tidak dapat dibatalkan karena data tidak lengkap' });
+    }
+    
+    // Reverse stock
+    const invResult = await client.query('SELECT * FROM inventory WHERE id=$1', [transaction.item_id]);
+    if (invResult.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'Barang tidak ditemukan di inventaris' });
+    }
+    
+    const item = invResult.rows[0];
+    let newStock;
+    
+    if (transaction.type === 'Masuk') {
+      // Reverse: subtract the quantity that was added
+      newStock = item.stock - transaction.quantity;
+      if (newStock < 0) {
+        await client.query('ROLLBACK');
+        return res.status(400).json({ error: `Stok tidak mencukupi untuk pembatalan. Stok saat ini: ${item.stock}, jumlah yang dibatalkan: ${transaction.quantity}` });
+      }
+    } else if (transaction.type === 'Keluar') {
+      // Reverse: add back the quantity that was taken
+      newStock = item.stock + transaction.quantity;
+    } else {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Tipe transaksi tidak didukung untuk pembatalan' });
+    }
+    
+    // Compute new status
+    const lowThreshold = 10;
+    const criticalThreshold = 3;
+    let status;
+    if (newStock > 20) status = 'Tersedia';
+    else if (newStock > 5) status = 'Hampir Habis';
+    else if (newStock === 0) status = 'Habis';
+    else status = 'Kritis';
+    
+    await client.query(
+      'UPDATE inventory SET stock=$1, status=$2 WHERE id=$3',
+      [newStock, status, transaction.item_id]
+    );
+    
+    // Mark transaction as cancelled
+    await client.query(
+      "UPDATE transactions SET category='Dibatalkan' WHERE id=$1",
+      [req.params.id]
+    );
+    
+    await client.query('COMMIT');
+    
+    res.json({ message: 'Transaksi berhasil dibatalkan', newStock });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
+  }
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'IQIS API is running' });
+});
+
+// Register (public)
+app.post('/api/register', async (req, res) => {
+  const { first_name, last_name, instansi, email, password } = req.body;
+
+  if (!first_name || !email || !password) {
+    return res.status(400).json({ message: 'Nama depan, email, dan password wajib diisi' });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ message: 'Password minimal 6 karakter' });
+  }
+
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO users (first_name, last_name, instansi, role, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, first_name, last_name, instansi, role, email',
+      [first_name, last_name || '', instansi || '', 'user', email, password]
+    );
+    res.json({ user: rows[0] });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ message: 'Email sudah digunakan' });
+    }
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // Login
@@ -309,6 +593,54 @@ app.delete('/api/users/:id', async (req, res) => {
   try {
     await pool.query('DELETE FROM users WHERE id=$1', [req.params.id]);
     res.json({ message: 'User deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Settings API
+// Get settings
+app.get('/api/settings', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM settings LIMIT 1');
+    // If no settings row exists, create one with defaults
+    if (rows.length === 0) {
+      const { rows: newRows } = await pool.query(
+        'INSERT INTO settings (school_name, address, phone, low_stock_threshold, critical_stock_threshold) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        ['SMP Negeri 01', 'Jl. Pendidikan No. 123', '021-1234567', 10, 3]
+      );
+      res.json(newRows[0]);
+    } else {
+      res.json(rows[0]);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update settings
+app.put('/api/settings', async (req, res) => {
+  const { school_name, address, phone, low_stock_threshold, critical_stock_threshold } = req.body;
+  try {
+    // Check if settings exist
+    const { rows } = await pool.query('SELECT * FROM settings LIMIT 1');
+    let result;
+    if (rows.length === 0) {
+      // Insert new settings
+      const { rows: newRows } = await pool.query(
+        'INSERT INTO settings (school_name, address, phone, low_stock_threshold, critical_stock_threshold) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [school_name, address, phone, low_stock_threshold, critical_stock_threshold]
+      );
+      result = newRows[0];
+    } else {
+      // Update existing settings
+      const { rows: updatedRows } = await pool.query(
+        'UPDATE settings SET school_name=$1, address=$2, phone=$3, low_stock_threshold=$4, critical_stock_threshold=$5 RETURNING *',
+        [school_name, address, phone, low_stock_threshold, critical_stock_threshold]
+      );
+      result = updatedRows[0];
+    }
+    res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
