@@ -151,10 +151,10 @@ export default function BorrowForm() {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-primary-fixed/30 border border-primary-fixed rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-blue-600">info</span>
-              <p className="text-sm text-blue-800">
+              <span className="material-symbols-outlined text-primary">info</span>
+              <p className="text-sm text-primary">
                 Barang harus dikembalikan sebelum tanggal jatuh tempo. Keterlambatan akan dicatat otomatis.
               </p>
             </div>

@@ -85,7 +85,7 @@ export default function BorrowingManagement() {
       case 'Terlambat':
         return <span className="px-3 py-1 bg-error-container text-on-error-container text-status-badge rounded-full uppercase">Terlambat</span>;
       case 'Dipinjam':
-        return <span className="px-3 py-1 bg-blue-100 text-blue-800 text-status-badge rounded-full uppercase border border-blue-300">Dipinjam</span>;
+        return <span className="px-3 py-1 bg-primary-fixed text-primary text-status-badge rounded-full uppercase border border-primary">Dipinjam</span>;
       case 'Dikembalikan':
         return <span className="px-3 py-1 bg-emerald-100 text-emerald-800 text-status-badge rounded-full uppercase">Dikembalikan</span>;
       default:
@@ -114,7 +114,7 @@ export default function BorrowingManagement() {
 </div>
         <div className="bg-primary p-6 rounded-xl shadow-lg flex flex-col justify-center gap-3">
           <p className="text-white font-medium text-sm">Butuh Peminjaman Baru?</p>
-          <Link to="/borrow-form" className="bg-white text-primary px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-blue-50">
+          <Link to="/borrow-form" className="bg-white text-primary px-4 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary-fixed">
             <span className="material-symbols-outlined text-sm">add</span>
             Tambah Pinjaman
           </Link>
@@ -125,8 +125,8 @@ export default function BorrowingManagement() {
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
           <div className="flex items-center gap-3">
-            <span className="font-h3 text-h3 text-blue-900">Daftar Aktif Peminjaman</span>
-            <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-bold rounded-full">BARANG SEKOLAH</span>
+            <span className="font-h3 text-h3 text-primary">Daftar Aktif Peminjaman</span>
+            <span className="px-2 py-0.5 bg-primary-fixed text-primary text-[10px] font-bold rounded-full">BARANG SEKOLAH</span>
           </div>
           {user?.role === 'Super Admin' && (
             <div className="flex items-center gap-2">

@@ -240,11 +240,11 @@ export default function InventoryList() {
                     <div className="w-10 h-10 rounded bg-slate-100 flex items-center justify-center">
                       <span className="material-symbols-outlined text-slate-400">inventory_2</span>
                     </div>
-                    <span className="font-semibold text-blue-900">{item.name}</span>
+                    <span className="font-semibold text-primary">{item.name}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">{item.category}</span>
+                  <span className="bg-primary-fixed text-primary px-3 py-1 rounded-full text-xs font-semibold">{item.category}</span>
                 </td>
                 <td className="px-6 py-4 text-slate-500 font-mono text-xs">{item.id}</td>
                 <td className="px-6 py-4 text-slate-700 font-medium">{item.stock} {item.unit || 'Unit'}</td>

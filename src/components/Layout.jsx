@@ -18,6 +18,7 @@ export default function Layout() {
     { path: '/inventory', icon: 'inventory_2', label: 'Inventaris' },
     { path: '/borrowing', icon: 'assignment_return', label: 'Peminjaman' },
     { path: '/withdrawal', icon: 'output', label: 'Pengambilan' },
+    { path: '/reports', icon: 'bar_chart', label: 'Laporan' },
   ];
 
   const adminNavItems = [
@@ -41,15 +42,15 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen bg-background">
       <aside className={`fixed left-0 top-0 h-full w-sidebar-width border-r border-slate-200 bg-white flex flex-col py-6 px-4 gap-2 z-40 ${sidebarOpen ? 'block' : 'hidden'} md:flex`}>
-        <div className="flex items-center gap-3 px-2 mb-8">
-          <div className="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
-            <span className="material-symbols-outlined text-white" style={{fontVariationSettings: "'FILL' 1"}}>school</span>
+          <div className="flex items-center gap-3 px-2 mb-8">
+            <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+              <img src="/favicon.svg" alt="IQIS" className="w-8 h-8" />
+            </div>
+            <div>
+              <h1 className="text-lg font-black text-primary leading-tight">IQIS</h1>
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Manajemen Aset Sekolah</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg font-black text-blue-900 leading-tight">IQIS</h1>
-            <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Manajemen Aset Sekolah</p>
-          </div>
-        </div>
 
         <nav className="flex-1 space-y-1">
           {navItems.map((item) => (
@@ -57,7 +58,7 @@ export default function Layout() {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer ${isActive ? 'bg-blue-50 text-blue-900 border-r-4 border-blue-800' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-800'}`
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer ${isActive ? 'bg-primary-fixed text-primary border-r-4 border-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-primary'}`
               }
               onClick={() => setSidebarOpen(false)}
             >
@@ -70,7 +71,7 @@ export default function Layout() {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer ${isActive ? 'bg-blue-50 text-blue-900 border-r-4 border-blue-800' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-800'}`
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer ${isActive ? 'bg-primary-fixed text-primary border-r-4 border-primary' : 'text-slate-600 hover:bg-slate-50 hover:text-primary'}`
               }
               onClick={() => setSidebarOpen(false)}
             >
@@ -95,7 +96,7 @@ export default function Layout() {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-blue-800' : 'text-slate-600 hover:bg-slate-50'}`
+                `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-primary' : 'text-slate-600 hover:bg-slate-50'}`
               }
               onClick={() => setSidebarOpen(false)}
             >
@@ -104,12 +105,12 @@ export default function Layout() {
             </NavLink>
           ))}
           {user?.role === 'Super Admin' && (
-            <NavLink to="/settings" className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-blue-800' : 'text-slate-600 hover:bg-slate-50'}`}>
+            <NavLink to="/settings" className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-primary' : 'text-slate-600 hover:bg-slate-50'}`}>
               <span className="material-symbols-outlined text-[20px]">settings</span>
               <span className="text-sm font-medium">Pengaturan</span>
             </NavLink>
           )}
-          <NavLink to="/help" className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-blue-800' : 'text-slate-600 hover:bg-slate-50'}`}>
+          <NavLink to="/help" className={({ isActive }) => `flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${isActive ? 'bg-slate-100 text-primary' : 'text-slate-600 hover:bg-slate-50'}`}>
             <span className="material-symbols-outlined text-[20px]">contact_support</span>
             <span className="text-sm font-medium">Bantuan</span>
           </NavLink>

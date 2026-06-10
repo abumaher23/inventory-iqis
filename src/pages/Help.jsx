@@ -49,7 +49,7 @@ export default function Help() {
           <span className="material-symbols-outlined text-4xl">support_agent</span>
           <div>
             <h4 className="font-bold text-lg mb-2">Butuh Bantuan Lebih?</h4>
-            <p className="text-blue-100 text-sm mb-4">Hubungi tim support kami untuk bantuan teknis.</p>
+            <p className="text-primary-fixed/80 text-sm mb-4">Hubungi tim support kami untuk bantuan teknis.</p>
             <div className="flex gap-3">
               <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold">Email Support</button>
               <button className="bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-bold">Lihat Dokumentasi</button>

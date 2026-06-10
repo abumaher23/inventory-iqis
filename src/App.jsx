@@ -16,6 +16,7 @@ import WithdrawalForm from './pages/WithdrawalForm';
 import BorrowForm from './pages/BorrowForm';
 import AccountManagement from './pages/AccountManagement';
 import Settings from './pages/Settings';
+import Reports from './pages/Reports';
 import Help from './pages/Help';
 import NotFound from './pages/NotFound';
 
@@ -40,6 +41,7 @@ export default function App() {
                 <Route path="/borrowing" element={<BorrowingManagement />} />
                 <Route path="/borrow-form" element={<BorrowForm />} />
                 <Route path="/withdrawal" element={<WithdrawalForm />} />
+                <Route path="/reports" element={<Reports />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="*" element={<NotFound />} />
               </Route>

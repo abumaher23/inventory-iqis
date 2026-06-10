@@ -58,12 +58,12 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-blue-50 text-primary rounded-lg">
+            <div className="p-2 bg-primary-fixed text-primary rounded-lg">
               <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>inventory_2</span>
             </div>
           </div>
           <h3 className="font-label-caps text-slate-500 uppercase">Total Aset</h3>
-          <p className="text-h1 font-h1 text-blue-900">{totalAssets}</p>
+          <p className="text-h1 font-h1 text-primary">{totalAssets}</p>
         </div>
 
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
@@ -93,7 +93,7 @@ export default function Dashboard() {
             </div>
           </div>
           <h3 className="font-label-caps text-slate-500 uppercase">Pengambilan Terbaru</h3>
-          <p className="text-h1 font-h1 text-blue-900">{transactions.filter(t => t.type === 'Masuk').length}</p>
+          <p className="text-h1 font-h1 text-primary">{transactions.filter(t => t.type === 'Masuk').length}</p>
         </div>
       </div>
 
@@ -166,7 +166,7 @@ export default function Dashboard() {
                         </div>
                       </td>
                       <td className="px-6 py-table-row-height">
-                        <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">{item.category}</span>
+                        <span className="bg-primary-fixed text-primary px-3 py-1 rounded-full text-xs font-semibold">{item.category}</span>
                       </td>
                       <td className="px-6 py-table-row-height text-slate-900 font-bold">{item.stock} {item.unit || 'Unit'}</td>
                       <td className="px-6 py-table-row-height">
@@ -208,7 +208,7 @@ export default function Dashboard() {
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                       trans.type === 'Masuk' ? 'bg-emerald-100 text-emerald-700' : 
                       trans.type === 'Keluar' ? 'bg-orange-100 text-orange-700' : 
-                      'bg-blue-100 text-blue-700'
+                      'bg-primary-fixed text-primary'
                     }`}>
                       <span className="material-symbols-outlined text-sm">
                         {trans.type === 'Masuk' ? 'login' : trans.type === 'Keluar' ? 'logout' : 'check_circle'}
@@ -240,8 +240,8 @@ export default function Dashboard() {
               <span className="material-symbols-outlined text-[160px]">inventory</span>
             </div>
             <h3 className="text-lg font-bold mb-2">Butuh Bantuan Cepat?</h3>
-            <p className="text-blue-100 text-sm mb-6">Gunakan menu yang tersedia untuk mengelola inventaris.</p>
-            <Link to="/incoming" className="inline-block bg-white text-primary px-6 py-2.5 rounded-lg font-bold text-sm shadow-sm hover:bg-blue-50 transition-colors cursor-pointer">
+            <p className="text-primary-fixed text-sm mb-6">Gunakan menu yang tersedia untuk mengelola inventaris.</p>
+            <Link to="/incoming" className="inline-block bg-white text-primary px-6 py-2.5 rounded-lg font-bold text-sm shadow-sm hover:bg-primary-fixed transition-colors cursor-pointer">
               Tambah Barang
             </Link>
           </div>

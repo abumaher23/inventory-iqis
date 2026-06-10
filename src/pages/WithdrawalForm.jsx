@@ -61,7 +61,7 @@ export default function WithdrawalForm() {
       setInventory(freshInventory);
       await api.updateInventory(updatedItem);
       const d = formData.date ? new Date(formData.date + 'T12:00:00') : new Date();
-      const formattedDate = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const formattedDate = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
       const userName = user ? `${user.first_name} ${user.last_name}`.trim() : formData.department;
       await api.addTransaction({
         type: 'Keluar',

@@ -41,7 +41,7 @@ export default function TransactionLogs() {
     switch(trans.type) {
       case 'Masuk': return { icon: 'login', bg: 'bg-emerald-100', color: 'text-emerald-700' };
       case 'Keluar': return { icon: 'logout', bg: 'bg-orange-100', color: 'text-orange-700' };
-      case 'Kembali': return { icon: 'check_circle', bg: 'bg-blue-100', color: 'text-blue-700' };
+      case 'Kembali': return { icon: 'check_circle', bg: 'bg-primary-fixed', color: 'text-primary' };
       default: return { icon: 'info', bg: 'bg-slate-100', color: 'text-slate-700' };
     }
   };
@@ -124,7 +124,7 @@ export default function TransactionLogs() {
                       isCancelled ? 'bg-slate-100 text-slate-400' :
                       trans.type === 'Masuk' ? 'bg-emerald-100 text-emerald-700' :
                       trans.type === 'Keluar' ? 'bg-orange-100 text-orange-700' :
-                      'bg-blue-100 text-blue-700'
+                      'bg-primary-fixed text-primary'
                     }`}>
                       {isCancelled ? 'Dibatalkan' : trans.type}
                     </span>
