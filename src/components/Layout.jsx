@@ -1,12 +1,30 @@
 import { NavLink, useLocation, Outlet, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
+import * as api from '../api';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [inventory, setInventory] = useState([]);
+  const notifRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+
+  useEffect(() => {
+    api.fetchInventory().then(setInventory).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const alerts = inventory.filter(i => i.stock <= 5 && i.type === 'consumable');
 
   const handleLogout = () => {
     logout();
@@ -129,12 +147,39 @@ export default function Layout() {
             <h2 className="font-h2 text-h2 text-primary">{getPageTitle()}</h2>
           </div>
            <div className="flex items-center gap-6">
-             <div className="flex items-center gap-2">
-               <button className="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors relative">
-                 <span className="material-symbols-outlined">notifications</span>
-                 <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
-               </button>
-             </div>
+              <div className="flex items-center gap-2 relative" ref={notifRef}>
+                <button
+                  className="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors relative cursor-pointer"
+                  onClick={() => setNotifOpen(!notifOpen)}
+                >
+                  <span className="material-symbols-outlined">notifications</span>
+                  {alerts.length > 0 && (
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                  )}
+                </button>
+                {notifOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-lg z-50">
+                    <div className="p-3 border-b border-slate-100">
+                      <p className="text-sm font-bold text-slate-800">Pemberitahuan</p>
+                    </div>
+                    <div className="max-h-64 overflow-y-auto">
+                      {alerts.length === 0 ? (
+                        <div className="p-6 text-center text-sm text-slate-400">Tidak ada pemberitahuan</div>
+                      ) : (
+                        alerts.map(item => (
+                          <div key={item.id} className="px-4 py-3 flex items-center gap-3 hover:bg-slate-50 border-b border-slate-50 last:border-b-0">
+                            <span className="material-symbols-outlined text-error text-lg">warning</span>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-slate-800 truncate">{item.name}</p>
+                              <p className="text-xs text-slate-500">Stok tersisa {item.stock} {item.unit || 'Unit'}</p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
               <div className="text-right">
                 <p className="text-xs font-bold text-on-background">{user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Admin Sekolah'}</p>
